@@ -31,6 +31,8 @@ namespace Math_Quiz
 
         // integer variable keeps track of time remaining.
         int timeLeft;
+    
+      
 
         /// <summary>
         /// Start the quiz by filling in all of the problems 
@@ -52,6 +54,9 @@ namespace Math_Quiz
             // 'sum' is the name of the NumericUpDown control.
             // Set value to zero before adding values to it.
             sum.Value = 0;
+            // Set color of NumericUpDowns to white
+            sum.BackColor = difference.BackColor = product.BackColor = 
+                quotient.BackColor = Color.White;
 
             // Fill in the subtraction problem.
             // Generate two random numbers to subtract.
@@ -78,6 +83,12 @@ namespace Math_Quiz
             divideLeftLabel.Text = dividend.ToString();
             divideRightLabel.Text = divisor.ToString();
             quotient.Value = 0;
+            
+            // insert date
+            var today = DateTime.Now.Date;
+            date.Text = today.ToString("dd MMMM yyyy");
+            // reset timer color
+            timeLabel.BackColor = Color.LightGreen;
 
             // start the timer
             timeLeft = 30;
@@ -100,6 +111,38 @@ namespace Math_Quiz
             }
             else
             {
+                if (sum.Value > 0 && sum.Value != addend1 + addend2)
+                {
+                    sum.BackColor = Color.LightPink;
+                }
+                else
+                {
+                    sum.BackColor = Color.White;
+                }
+                if (difference.Value != 0 && minuend - subtrahend != difference.Value)
+                {
+                    difference.BackColor = Color.LightPink;
+                }
+                else
+                {
+                    difference.BackColor = Color.White;
+                }
+                if (product.Value != 0 && multiplicand * multiplier != product.Value)
+                {
+                    product.BackColor = Color.LightPink;
+                }
+                else
+                {
+                    product.BackColor = Color.White;
+                }
+                if (quotient.Value != 0 && dividend / divisor != quotient.Value)
+                {
+                    quotient.BackColor = Color.LightPink;
+                }
+                else
+                {
+                    quotient.BackColor = Color.White;
+                }
                 return false;
             }
         }
@@ -113,6 +156,7 @@ namespace Math_Quiz
         {
             StartTheQuiz();
             startButton.Enabled = false;
+            startButton.BackColor = Color.SteelBlue;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -122,9 +166,18 @@ namespace Math_Quiz
                 // if CheckTheAnswer() returns true, user is right.
                 // Stop timer and show MessageBox.
                 timer1.Stop();
+                sum.BackColor = difference.BackColor = product.BackColor = 
+                    quotient.BackColor = Color.White;
+                
+
+
                 MessageBox.Show("You got the answer right!",
                                  "Congratulations!");
                 startButton.Enabled = true;
+                startButton.BackColor = Color.LightSteelBlue;
+                
+
+
 
             }
             else if (timeLeft > 0)
@@ -133,19 +186,63 @@ namespace Math_Quiz
                 // by updating the Time Left label
                 timeLeft = timeLeft - 1;
                 timeLabel.Text = timeLeft + " seconds";
+                if (timeLeft > 15)
+                {
+                    timeLabel.BackColor = Color.LightGreen;
+                }
+                else if (timeLeft > 10)
+                {
+                    timeLabel.BackColor = Color.Yellow;
+                }
+                else if (timeLeft > 5)
+                {
+                    timeLabel.BackColor = Color.Gold;
+                }
+                else if (timeLeft > 2)
+                {
+                    timeLabel.BackColor = Color.Orange;
+                }
+                else if (timeLeft > 0)
+                {
+                    timeLabel.BackColor = Color.DarkOrange;
+                }
+                else
+                {
+                    timeLabel.BackColor = Color.Red;
+                }
+               
             }
             else
             {
                 // If the user ran out of time, stop timer
                 // show a MessageBox, and fill in answers.
+                
                 timer1.Stop();
+                if (sum.Value == 0)
+                {
+                    sum.BackColor = Color.LightPink;
+                }
+                if (difference.Value == 0)
+                {
+                    difference.BackColor = Color.LightPink;
+                }
+                if (product.Value == 0)
+                { 
+                    product.BackColor = Color.LightPink;
+                }
+                if (quotient.Value == 0)
+                {
+                    quotient.BackColor = Color.LightPink;
+                }
                 timeLabel.Text = "Time's up!";
                 MessageBox.Show("You didn't finish in time.", "Sorry!");
                 sum.Value = addend1 + addend2;
                 difference.Value = minuend - subtrahend;
                 product.Value = multiplicand * multiplier;
                 quotient.Value = dividend / divisor;
+                timeLabel.BackColor = Color.LightSteelBlue;
                 startButton.Enabled = true;
+                startButton.BackColor = Color.LightSteelBlue;
             }
         }
 
@@ -159,6 +256,12 @@ namespace Math_Quiz
                 int lengthOfAnswer = answerBox.Value.ToString().Length;
                 answerBox.Select(0, lengthOfAnswer);
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            var today = DateTime.Now.Date;
+            date.Text = today.ToString("dd MMMM yyyy");
         }
 
 
